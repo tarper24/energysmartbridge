@@ -17,6 +17,7 @@
         elementfail_state,
         tanksensorfail_state,
         faultcodes_state,
-        signalstrength_state
+        signalstrength_state,
+        grid_state
     }
 }

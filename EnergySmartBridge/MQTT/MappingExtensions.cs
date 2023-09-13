@@ -52,6 +52,16 @@ namespace EnergySmartBridge.MQTT
             return ret;
         }
 
+        public static BinarySensor ToGridConfig(this WaterHeaterInput waterHeater)
+        {
+            BinarySensor ret = new BinarySensor
+            {
+                name = waterHeater.GetDisplayName() + " RA Enabled",
+                state_topic = waterHeater.ToTopic(Topic.grid_state)
+            };
+            return ret;
+        }
+
         public static Sensor ToHotWaterVolConfig(this WaterHeaterInput waterHeater)
         {
             Sensor ret = new Sensor

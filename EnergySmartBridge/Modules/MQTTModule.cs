@@ -202,6 +202,9 @@ namespace EnergySmartBridge.Modules
 
             PublishAsync($"{Global.mqtt_discovery_prefix}/binary_sensor/{waterHeater.DeviceText}/heating/config",
                 JsonConvert.SerializeObject(waterHeater.ToInHeatingConfig()));
+            
+            PublishAsync($"{Global.mqtt_discovery_prefix}/binary_sensor/{waterHeater.DeviceText}/grid/config",
+                JsonConvert.SerializeObject(waterHeater.ToGridConfig()));
 
             PublishAsync($"{Global.mqtt_discovery_prefix}/sensor/{waterHeater.DeviceText}/hotwatervol/config",
                 JsonConvert.SerializeObject(waterHeater.ToHotWaterVolConfig()));
@@ -243,6 +246,8 @@ namespace EnergySmartBridge.Modules
             PublishAsync(waterHeater.ToTopic(Topic.faultcodes_state), waterHeater.FaultCodes);
 
             PublishAsync(waterHeater.ToTopic(Topic.signalstrength_state), waterHeater.SignalStrength);
+
+            PublishAsync(waterHeater.ToTopic(Topic.grid_state), waterHeater.Grid == "Disabled" ? "OFF" : "ON");
         }
 
         private Task PublishAsync(string topic, string payload)
