@@ -10,7 +10,7 @@ FROM nginx:1.24.0
 
 RUN apt-get update && apt-get install -y openssl && apt-get install -y mono-devel
 
-COPY nginx.conf.template /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 RUN openssl req  -nodes -new -x509 -sha1 -subj '/CN=energysmartwaterheater.com' -keyout /etc/nginx/energysmartwaterheater.com.key -out /etc/nginx/energysmartwaterheater.com.crt -days 3650
 
