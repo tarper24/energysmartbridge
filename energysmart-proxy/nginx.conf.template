@@ -17,8 +17,7 @@ events {
 stream {
     server {
         listen                443 ssl;
-        proxy_pass            $PROXY_PASS_LOCATION;
-        #resolver 192.168.0.1;
+        proxy_pass            127.0.0.1:8001;
 
         ssl_certificate       /etc/nginx/energysmartwaterheater.com.crt;
         ssl_certificate_key   /etc/nginx/energysmartwaterheater.com.key;
