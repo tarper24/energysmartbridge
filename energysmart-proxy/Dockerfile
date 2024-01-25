@@ -1,4 +1,4 @@
-FROM nginx:1.25.3
+FROM nginx:1.24.0
 #ENV NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
 
 RUN apt-get update && apt-get install -y openssl
