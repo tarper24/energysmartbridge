@@ -35,6 +35,8 @@ namespace EnergySmartBridge
             Global.mqtt_password = settings.CheckEnv("mqtt_password");
             Global.mqtt_prefix = settings.CheckEnv("mqtt_prefix") ?? "energysmart";
             Global.mqtt_discovery_prefix = settings.CheckEnv("mqtt_discovery_prefix");
+
+            log.Debug("Trying to connect to " + Global.mqtt_server + " using username " + Global.mqtt_username);
         }
 
         private static string CheckEnv(this NameValueCollection settings, string name)

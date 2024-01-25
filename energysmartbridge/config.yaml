@@ -1,0 +1,30 @@
+name: "Energy Smart Bridge"
+description: "Energy Smart Bridge"
+version: "0.0.1"
+slug: "energy_smart_bridge"
+image: "ghcr.io/starsoccer/energysmartbridge/{arch}"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armv7
+ports:
+  443/tcp: 443
+options:
+  MQTT_PORT: 1883
+  MQTT_SERVER: null
+  MQTT_USERNAME: null
+  MQTT_PASSWORD: null
+  MQTT_PREFIX: "energysmart"
+  MQTT_DISCOVERY_PREFIX: "homeassistant"
+  HTTPS: 443
+  log_level: "info"
+schema:
+  MQTT_PORT: port
+  MQTT_SERVER: str
+  MQTT_USERNAME: str
+  MQTT_PASSWORD: password
+  MQTT_PREFIX: str
+  MQTT_DISCOVERY_PREFIX: str
+  HTTPS: port
+  log_level: list(fatal|error|warn|info|debug|trace)
