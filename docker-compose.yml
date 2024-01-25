@@ -17,7 +17,7 @@ services:
   energysmart-proxy:
     build: ./energysmart-proxy
     environment:
-      - PROXY_PASS_LOCATION=192.168.0.241:8001
+      PROXY_PASS_LOCATION: 192.168.0.241:8001
     ports:
       - "443:443"
     restart: always
