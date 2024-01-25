@@ -2,7 +2,7 @@ version: "3"
 
 services:
   energysmart-bridge:
-    build: .
+    build: ./EnergySmartBridge
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:
