@@ -31,14 +31,13 @@ namespace EnergySmartBridge.MQTT
 
                 max_temp = waterHeater.MaxSetPoint.ToString(),
 
-                mode_state_template = "heat",
                 mode_state_topic = waterHeater.ToTopic(Topic.mode_state),
-                modes = new List<string>(new string[] { "heat" }),
+                mode_command_topic = waterHeater.ToTopic(Topic.mode_command),
+                modes = new List<string> { "eco", "heat_pump", "electric", "off" },
 
-                preset_mode_state_topic = waterHeater.ToTopic(Topic.mode_state),
-                preset_mode_command_topic = waterHeater.ToTopic(Topic.mode_command),
-                preset_modes = waterHeater.AvailableModes.Split(',').ToList()
+                unique_id = waterHeater.DeviceText + "_water_heater",
             };
+
             return ret;
         }
 
@@ -57,7 +56,8 @@ namespace EnergySmartBridge.MQTT
             BinarySensor ret = new BinarySensor
             {
                 name = waterHeater.GetDisplayName() + " RA Enabled",
-                state_topic = waterHeater.ToTopic(Topic.grid_state)
+                state_topic = waterHeater.ToTopic(Topic.grid_state),
+                unique_id = waterHeater.DeviceText + "_ra_enabled",
             };
             return ret;
         }
@@ -67,7 +67,8 @@ namespace EnergySmartBridge.MQTT
             Sensor ret = new Sensor
             {
                 name = waterHeater.GetDisplayName() + " Volume",
-                state_topic = waterHeater.ToTopic(Topic.hotwatervol_state)
+                state_topic = waterHeater.ToTopic(Topic.hotwatervol_state),
+                unique_id = waterHeater.DeviceText + "_volume",
             };
             return ret;
         }
@@ -101,7 +102,8 @@ namespace EnergySmartBridge.MQTT
             BinarySensor ret = new BinarySensor
             {
                 name = waterHeater.GetDisplayName() + " Dry Fire",
-                state_topic = waterHeater.ToTopic(Topic.dryfire_state)
+                state_topic = waterHeater.ToTopic(Topic.dryfire_state),
+                unique_id = waterHeater.DeviceText + "_dry_fire",
             };
             return ret;
         }
@@ -111,7 +113,8 @@ namespace EnergySmartBridge.MQTT
             BinarySensor ret = new BinarySensor
             {
                 name = waterHeater.GetDisplayName() + " Element Fail",
-                state_topic = waterHeater.ToTopic(Topic.elementfail_state)
+                state_topic = waterHeater.ToTopic(Topic.elementfail_state),
+                unique_id = waterHeater.DeviceText + "_element_fail",
             };
             return ret;
         }
@@ -121,7 +124,8 @@ namespace EnergySmartBridge.MQTT
             BinarySensor ret = new BinarySensor
             {
                 name = waterHeater.GetDisplayName() + " Tank Sensor Fail",
-                state_topic = waterHeater.ToTopic(Topic.tanksensorfail_state)
+                state_topic = waterHeater.ToTopic(Topic.tanksensorfail_state),
+                unique_id = waterHeater.DeviceText + "_tank_sensor_fail",
             };
             return ret;
         }

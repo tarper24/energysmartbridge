@@ -197,7 +197,7 @@ namespace EnergySmartBridge.Modules
 
         private void PublishWaterHeater(WaterHeaterInput waterHeater)
         {
-            PublishAsync($"{Global.mqtt_discovery_prefix}/climate/{waterHeater.DeviceText}/config",
+            PublishAsync($"{Global.mqtt_discovery_prefix}/water_heater/{waterHeater.DeviceText}/config",
                 JsonConvert.SerializeObject(waterHeater.ToThermostatConfig()));
 
             PublishAsync($"{Global.mqtt_discovery_prefix}/binary_sensor/{waterHeater.DeviceText}/heating/config",
@@ -229,7 +229,23 @@ namespace EnergySmartBridge.Modules
         {
             PublishAsync(waterHeater.ToTopic(Topic.maxsetpoint_state), waterHeater.MaxSetPoint.ToString());
             PublishAsync(waterHeater.ToTopic(Topic.setpoint_state), waterHeater.SetPoint.ToString());
-            PublishAsync(waterHeater.ToTopic(Topic.mode_state), waterHeater.Mode);
+
+            string ha_mode = "off";
+            switch(waterHeater.Mode) {
+                case "Efficiency":
+                    ha_mode = "eco";
+                    break;
+                case "Hybrid":
+                    ha_mode = "heat_pump";
+                    break;
+                case "Electric":
+                    ha_mode = "electric";
+                    break;
+                default:
+                    break;
+            }
+
+            PublishAsync(waterHeater.ToTopic(Topic.mode_state), ha_mode);
 
             PublishAsync(waterHeater.ToTopic(Topic.systeminheating_state), waterHeater.SystemInHeating ? "ON" : "OFF");
             PublishAsync(waterHeater.ToTopic(Topic.hotwatervol_state), waterHeater.HotWaterVol);

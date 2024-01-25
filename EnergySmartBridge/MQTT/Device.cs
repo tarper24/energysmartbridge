@@ -12,6 +12,8 @@ namespace EnergySmartBridge.MQTT
 
         public string availability_topic { get; set; } = $"{Global.mqtt_prefix}/status";
 
+        public string unique_id { get; set; }
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public DeviceRegistry device { get; set; } = MQTTModule.MqttDeviceRegistry;
     }
