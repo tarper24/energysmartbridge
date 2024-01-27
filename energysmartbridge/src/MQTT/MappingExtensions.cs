@@ -47,6 +47,7 @@ namespace EnergySmartBridge.MQTT
             {
                 name = waterHeater.GetDisplayName() + " Element",
                 state_topic = waterHeater.ToTopic(Topic.systeminheating_state)
+                unique_id = waterHeater.DeviceText + "_is_heating",
             };
             return ret;
         }
@@ -114,6 +115,7 @@ namespace EnergySmartBridge.MQTT
                 device_class = Sensor.DeviceClass.temperature,
                 state_topic = waterHeater.ToTopic(Topic.uppertemp_state),
                 unit_of_measurement = "°" + waterHeater.Units
+                unique_id = waterHeater.DeviceText + "_upper_temp",
             };
             return ret;
         }
@@ -126,6 +128,7 @@ namespace EnergySmartBridge.MQTT
                 device_class = Sensor.DeviceClass.temperature,
                 state_topic = waterHeater.ToTopic(Topic.lowertemp_state),
                 unit_of_measurement = "°" + waterHeater.Units
+                unique_id = waterHeater.DeviceText + "_lower_temp",
             };
             return ret;
         }
