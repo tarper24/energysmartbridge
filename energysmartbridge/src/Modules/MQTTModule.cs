@@ -206,6 +206,15 @@ namespace EnergySmartBridge.Modules
             PublishAsync($"{Global.mqtt_discovery_prefix}/binary_sensor/{waterHeater.DeviceText}/grid/config",
                 JsonConvert.SerializeObject(waterHeater.ToGridConfig()));
 
+            PublishAsync($"{Global.mqtt_discovery_prefix}/binary_sensor/{waterHeater.DeviceText}/airfilterstatus/config",
+                JsonConvert.SerializeObject(waterHeater.ToAirFilterStatusConfig()));
+
+            PublishAsync($"{Global.mqtt_discovery_prefix}/binary_sensor/{waterHeater.DeviceText}/condensepumpfail/config",
+                JsonConvert.SerializeObject(waterHeater.ToCondensePumpFailConfig()));
+
+            PublishAsync($"{Global.mqtt_discovery_prefix}/binary_sensor/{waterHeater.DeviceText}/leakdetect/config",
+                JsonConvert.SerializeObject(waterHeater.ToLeakDetectConfig()));
+
             PublishAsync($"{Global.mqtt_discovery_prefix}/sensor/{waterHeater.DeviceText}/hotwatervol/config",
                 JsonConvert.SerializeObject(waterHeater.ToHotWaterVolConfig()));
 
@@ -264,6 +273,9 @@ namespace EnergySmartBridge.Modules
             PublishAsync(waterHeater.ToTopic(Topic.signalstrength_state), waterHeater.SignalStrength);
 
             PublishAsync(waterHeater.ToTopic(Topic.grid_state), waterHeater.Grid == "Disabled" ? "OFF" : "ON");
+            PublishAsync(waterHeater.ToTopic(Topic.air_filter_status_state), waterHeater.AirFilterStatus == "OK" ? "ON" : "OFF");
+            PublishAsync(waterHeater.ToTopic(Topic.condense_pump_fail_state), waterHeater.CondensePumpFail == "False" ? "OFF" : "ON");
+            PublishAsync(waterHeater.ToTopic(Topic.leak_detect_state), waterHeater.LeakDetect == "NotDetected" ? "OFF" : "ON");
         }
 
         private Task PublishAsync(string topic, string payload)

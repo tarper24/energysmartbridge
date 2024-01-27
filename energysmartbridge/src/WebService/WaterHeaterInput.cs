@@ -17,6 +17,9 @@
         public string LeakDetect { get; set; } // NotDetected
         public int MaxSetPoint { get; set; } // 120
         public string Grid { get; set; } // Enabled
+        public string AirFilterStatus { get; set; } // OK
+        public string CondensePumpFail { get; set; } // False
+        public string LeakDetect { get; set; } // NotDetected
         public string AvailableModes { get; set; } // Standard,Vacation,EnergySmart
         public bool SystemInHeating { get; set; } // False
         public string HotWaterVol { get; set; } // High

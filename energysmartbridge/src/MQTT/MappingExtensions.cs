@@ -62,6 +62,39 @@ namespace EnergySmartBridge.MQTT
             return ret;
         }
 
+        public static BinarySensor ToAirFilterStatusConfig(this WaterHeaterInput waterHeater)
+        {
+            BinarySensor ret = new BinarySensor
+            {
+                name = waterHeater.GetDisplayName() + " Air Filter Status",
+                state_topic = waterHeater.ToTopic(Topic.air_filter_status_state),
+                unique_id = waterHeater.DeviceText + "_air_filter_status",
+            };
+            return ret;
+        }
+
+        public static BinarySensor ToCondensePumpFailConfig(this WaterHeaterInput waterHeater)
+        {
+            BinarySensor ret = new BinarySensor
+            {
+                name = waterHeater.GetDisplayName() + " Condense Pump Fail",
+                state_topic = waterHeater.ToTopic(Topic.condense_pump_fail_state),
+                unique_id = waterHeater.DeviceText + "_condense_pump_fail",
+            };
+            return ret;
+        }
+
+        public static BinarySensor ToLeakDetectConfig(this WaterHeaterInput waterHeater)
+        {
+            BinarySensor ret = new BinarySensor
+            {
+                name = waterHeater.GetDisplayName() + " Leak Detect",
+                state_topic = waterHeater.ToTopic(Topic.leak_detect_state),
+                unique_id = waterHeater.DeviceText + "_leak_detect",
+            };
+            return ret;
+        }
+
         public static Sensor ToHotWaterVolConfig(this WaterHeaterInput waterHeater)
         {
             Sensor ret = new Sensor

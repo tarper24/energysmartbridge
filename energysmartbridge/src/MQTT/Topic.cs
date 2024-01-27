@@ -18,6 +18,9 @@
         tanksensorfail_state,
         faultcodes_state,
         signalstrength_state,
-        grid_state
+        grid_state,
+        air_filter_status_state,
+        condense_pump_fail_state,
+        leak_detect_state,
     }
 }
