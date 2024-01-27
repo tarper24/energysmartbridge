@@ -176,5 +176,82 @@ namespace EnergySmartBridge.MQTT
             };
             return ret;
         }
+
+        public static BinarySensor ToEcoErrorConfig(this WaterHeaterInput waterHeater)
+        {
+            BinarySensor ret = new BinarySensor
+            {
+                name = waterHeater.GetDisplayName() + " Eco Error",
+                state_topic = waterHeater.ToTopic(Topic.tanksensorfail_state),
+                unique_id = waterHeater.DeviceText + "_eco_error",
+            };
+            return ret;
+        }
+
+        public static Sensor ToLeakConfig(this WaterHeaterInput waterHeater)
+        {
+            Sensor ret = new Sensor
+            {
+                name = waterHeater.GetDisplayName() + " Leak",
+                state_topic = waterHeater.ToTopic(Topic.leak_state),
+                unique_id = waterHeater.DeviceText + "_leak",
+            };
+            return ret;
+        }
+
+        public static Sensor ToMasterDispFailConfig(this WaterHeaterInput waterHeater)
+        {
+            Sensor ret = new Sensor
+            {
+                name = waterHeater.GetDisplayName() + " Master Disp Fail",
+                state_topic = waterHeater.ToTopic(Topic.master_disp_fail_state),
+                unique_id = waterHeater.DeviceText + "_master_disp_fail",
+            };
+            return ret;
+        }
+
+        public static Sensor ToCompSensorFailConfig(this WaterHeaterInput waterHeater)
+        {
+            Sensor ret = new Sensor
+            {
+                name = waterHeater.GetDisplayName() + " Comp Sensor Fail",
+                state_topic = waterHeater.ToTopic(Topic.comp_sensor_fail_state),
+                unique_id = waterHeater.DeviceText + "_comp_sensor_fail",
+            };
+            return ret;
+        }
+
+        public static Sensor ToSysSensorFailConfig(this WaterHeaterInput waterHeater)
+        {
+            Sensor ret = new Sensor
+            {
+                name = waterHeater.GetDisplayName() + " Sys Sensor Fail",
+                state_topic = waterHeater.ToTopic(Topic.sys_sensor_fail_state),
+                unique_id = waterHeater.DeviceText + "_sys_sensor_fail",
+            };
+            return ret;
+        }
+
+        public static Sensor ToSystemFailConfig(this WaterHeaterInput waterHeater)
+        {
+            Sensor ret = new Sensor
+            {
+                name = waterHeater.GetDisplayName() + " System Fail",
+                state_topic = waterHeater.ToTopic(Topic.system_fail_state),
+                unique_id = waterHeater.DeviceText + "_system_fail",
+            };
+            return ret;
+        }
+
+       public static Sensor ToFaultCodesConfig(this WaterHeaterInput waterHeater)
+        {
+            Sensor ret = new Sensor
+            {
+                name = waterHeater.GetDisplayName() + " Fault Codes",
+                state_topic = waterHeater.ToTopic(Topic.fault_codes_state),
+                unique_id = waterHeater.DeviceText + "_fault_codes",
+            };
+            return ret;
+        }
     }
 }

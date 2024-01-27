@@ -23,5 +23,12 @@
         air_filter_status_state,
         condense_pump_fail_state,
         leak_detect_state,
+        leak_state,
+        eco_error_state,
+        master_disp_fail_state,
+        comp_sensor_fail_state,
+        sys_sensor_fail_state,
+        system_fail_state,
+        fault_codes_state,
     }
 }
