@@ -40,7 +40,7 @@ namespace EnergySmartBridge.MQTT
 
             return ret;
         }
-
+        
         public static BinarySensor ToInHeatingConfig(this WaterHeaterInput waterHeater)
         {
             BinarySensor ret = new BinarySensor
@@ -48,6 +48,17 @@ namespace EnergySmartBridge.MQTT
                 name = waterHeater.GetDisplayName() + " Element",
                 state_topic = waterHeater.ToTopic(Topic.systeminheating_state)
                 unique_id = waterHeater.DeviceText + "_is_heating",
+            };
+            return ret;
+        }
+
+        public static Sensor ToRawModeConfig(this WaterHeaterInput waterHeater)
+        {
+            Sensor ret = new Sensor
+            {
+                name = waterHeater.GetDisplayName() + " Raw Mode",
+                state_topic = waterHeater.ToTopic(Topic.raw_mode_state),
+                unique_id = waterHeater.DeviceText + "_raw_mode",
             };
             return ret;
         }

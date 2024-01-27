@@ -5,6 +5,7 @@
         updaterate_state,
         updaterate_command,
         mode_state,
+        raw_mode_state,
         mode_command,
         maxsetpoint_state,
         setpoint_state,

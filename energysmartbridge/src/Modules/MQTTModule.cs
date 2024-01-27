@@ -215,6 +215,9 @@ namespace EnergySmartBridge.Modules
             PublishAsync($"{Global.mqtt_discovery_prefix}/binary_sensor/{waterHeater.DeviceText}/leakdetect/config",
                 JsonConvert.SerializeObject(waterHeater.ToLeakDetectConfig()));
 
+            PublishAsync($"{Global.mqtt_discovery_prefix}/sensor/{waterHeater.DeviceText}/rawmode/config",
+                JsonConvert.SerializeObject(waterHeater.ToRawModeConfig()));
+
             PublishAsync($"{Global.mqtt_discovery_prefix}/sensor/{waterHeater.DeviceText}/hotwatervol/config",
                 JsonConvert.SerializeObject(waterHeater.ToHotWaterVolConfig()));
 
@@ -271,6 +274,8 @@ namespace EnergySmartBridge.Modules
             PublishAsync(waterHeater.ToTopic(Topic.faultcodes_state), waterHeater.FaultCodes);
 
             PublishAsync(waterHeater.ToTopic(Topic.signalstrength_state), waterHeater.SignalStrength);
+
+            PublishAsync(waterHeater.ToTopic(Topic.raw_mode_state), waterHeater.Mode);
 
             PublishAsync(waterHeater.ToTopic(Topic.grid_state), waterHeater.Grid == "Disabled" ? "OFF" : "ON");
             PublishAsync(waterHeater.ToTopic(Topic.air_filter_status_state), waterHeater.AirFilterStatus == "OK" ? "ON" : "OFF");
