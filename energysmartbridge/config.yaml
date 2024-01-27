@@ -17,7 +17,6 @@ options:
   MQTT_PASSWORD: null
   MQTT_PREFIX: "energysmart"
   MQTT_DISCOVERY_PREFIX: "homeassistant"
-  HTTPS: 443
 schema:
   MQTT_PORT: port
   MQTT_SERVER: str
@@ -25,4 +24,3 @@ schema:
   MQTT_PASSWORD: password
   MQTT_PREFIX: str
   MQTT_DISCOVERY_PREFIX: str
-  HTTPS: port
