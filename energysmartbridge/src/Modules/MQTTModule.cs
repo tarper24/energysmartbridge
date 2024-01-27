@@ -144,9 +144,25 @@ namespace EnergySmartBridge.Modules
                 else if (topic == Topic.mode_command)
                 {
                     log.Debug($"Queued {id} Mode: {payload}");
+
+                    string heater_mode = "off";
+                    switch(payload) {
+                        case "heat_pump":
+                            heater_mode = "Efficiency";
+                            break;
+                        case "eco":
+                            heater_mode = "Hybrid";
+                            break;
+                        case "electric":
+                            heater_mode = "Electric";
+                            break;
+                        default:
+                            break;
+                    }
+
                     connectedModules[id].Enqueue(new WaterHeaterOutput()
                     {
-                        Mode = payload
+                        Mode = heater_mode
                     });
                 }
                 else if (topic == Topic.setpoint_command &&
