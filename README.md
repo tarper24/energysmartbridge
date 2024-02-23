@@ -91,3 +91,10 @@ For this reason, there is another sensor called, `Water Heater Raw Mode` include
 
 ## Credit
 Credit to [@excaliburpartners](https://github.com/excaliburpartners/EnergySmartBridge) on most of the original work. 99% of this code is theirs. I have just tweaked their code in order to make setup within Home assistant easier and expose more sensors.
+
+## Misc Links/Info
+
+- https://www.instructables.com/AO-Smith-Water-Heater-Monitor-Lowes-IRIS/
+- https://web.archive.org/web/20200926235632/https://github.com/LoneWolf345/hassio-add-ons
+- https://cocoontech.com/threads/homeseer-3-and-openhab.31113/page-2
+- https://forums.homeseer.com/forum/hs4-products/hs4-plugins/lighting-primary-technology-plug-ins-aa/mcsmqtt-michael-mcsharry-aa/1531027-any-solution-for-cta-2045-and-mqtt
