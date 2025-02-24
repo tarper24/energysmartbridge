@@ -1,9 +1,9 @@
 
 import express from 'express';
+import bodyParser from 'body-parser';
 import { CONFIG } from './src/config.js';
 import { LOGGER } from './src/logger.js';
 import { WaterHeater } from './src/waterheater.js';
-import { queryParser } from 'express-query-parser';
 import { MQTT } from './src/mqtt.js';
 
 LOGGER.debug({message: 'Loaded Config', CONFIG});
@@ -13,14 +13,8 @@ const MQTT_BROKER = new MQTT(WATER_HEATERS);
 
 const app = express();
 app.disable('x-powered-by');
-app.use(
-    queryParser({
-      parseNull: true,
-      parseUndefined: true,
-      parseBoolean: true,
-      parseNumber: true
-    })
-);
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(express.urlencoded({ extended: true })); // support encoded bodies
 
 const getCreateWaterHeater = async (queryParams) => {
     const deviceId = queryParams.DeviceText;
@@ -38,7 +32,7 @@ const getCreateWaterHeater = async (queryParams) => {
 }
 
 app.use(async (req, res) => {
-    LOGGER.debug({message: "Got Request", req, query: req.query, path: req.path});
+    LOGGER.debug({message: "Got Request", req, body: req.body, query: req.query, path: req.path});
     const waterHeater = await getCreateWaterHeater(req.query);
     res.status(200).end(JSON.stringify(waterHeater.toResponse()));
 })
