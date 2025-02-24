@@ -9,4 +9,4 @@ nginx -v
 echo "Node Version: $(node -v)"
 echo "NPM Version: $(npm -v)"
 
-exec nginx -g 'daemon off;' & node index.js
+exec nginx -g 'daemon off;' & ./app
