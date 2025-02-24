@@ -90,10 +90,14 @@ export class WaterHeater {
             if (key in MAPPING) {
                 switch (key) {
                     case 'AvailableModes':
-                        this[MAPPING[key]] = queryParams[key].split(',')
+                        this[MAPPING[key]] = queryParams[key].split(',');
+                        break;
+                    case 'LowerTemp':
+                    case 'UpperTemp':
+                        this[MAPPING[key]] = parseInt(queryParams[key]);
                         break;
                     default:
-                        this[MAPPING[key]] = queryParams[key]
+                        this[MAPPING[key]] = queryParams[key];
                 }
             }
         }
