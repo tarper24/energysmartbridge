@@ -1,5 +1,7 @@
 FROM nginx:1.24.0
 
+WORKDIR /app
+
 RUN apt-get update && apt-get install -y openssl && apt-get install -y nodejs && apt-get install -y npm
 
 COPY nginx.conf /etc/nginx/nginx.conf
