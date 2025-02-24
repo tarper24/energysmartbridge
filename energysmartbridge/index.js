@@ -33,7 +33,7 @@ const getCreateWaterHeater = async (queryParams) => {
 
 app.use(async (req, res) => {
     LOGGER.debug({message: "Got Request", req, body: req.body, query: req.query, path: req.path});
-    const waterHeater = await getCreateWaterHeater(req.query);
+    const waterHeater = await getCreateWaterHeater(req.body);
     res.status(200).end(JSON.stringify(waterHeater.toResponse()));
 })
 
