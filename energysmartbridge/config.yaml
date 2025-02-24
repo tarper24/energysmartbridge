@@ -1,6 +1,6 @@
 name: "Energy Smart Bridge"
 description: "Energy Smart Bridge"
-version: "0.0.5"
+version: "1.0.0"
 slug: "energy_smart_bridge"
 image: "ghcr.io/starsoccer/energysmartbridge/{arch}"
 init: false
@@ -15,12 +15,10 @@ options:
   MQTT_SERVER: null
   MQTT_USERNAME: null
   MQTT_PASSWORD: null
-  MQTT_PREFIX: "energysmart"
-  MQTT_DISCOVERY_PREFIX: "homeassistant"
+  log_level: list(fatal|error|warn|info|debug|trace)
 schema:
   MQTT_PORT: port
   MQTT_SERVER: str
   MQTT_USERNAME: str
   MQTT_PASSWORD: password
-  MQTT_PREFIX: str
-  MQTT_DISCOVERY_PREFIX: str
+  log_level: list(fatal|error|warn|info|debug|trace)

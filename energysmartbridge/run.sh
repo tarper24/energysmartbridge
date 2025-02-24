@@ -1,11 +1,12 @@
 set -e
 
+echo Setting ENV Variables
+export CONFIG_PATH="/data/options.json"
+echo Env Set
+
 echo Listing Versions!
 nginx -v
+echo "Node Version: $(node -v)"
+echo "NPM Version: $(npm -v)"
 
-for keyval in $(grep -E '": [^\{]' /data/options.json | sed -e 's/: /=/' -e "s/\(\,\)$//"); do
-    eval export $keyval
-done
-
-#envsubst < /nginx.conf.template > /etc/nginx/nginx.conf;
-exec nginx -g 'daemon off;' & mono EnergySmartBridge.exe -i -c /config/EnergySmartBridge.ini -e
+exec nginx -g 'daemon off;' & node index.js
