@@ -43,6 +43,6 @@ app.use('/~branecky/postAll.php', async (req, res) => {
     res.status(200).end(JSON.stringify(waterHeater.toResponse()));
 })
 
-app.listen(80);
+app.listen(8001);
 
 LOGGER.info({message: "Server listening on 80"});
