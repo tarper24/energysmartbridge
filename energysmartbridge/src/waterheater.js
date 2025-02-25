@@ -1,3 +1,5 @@
+import { BinarySensor } from "./binarySensor.js";
+
 const MODE_MAPPING = {
     'Electric': 'electric',
     'Standard': "electric",
@@ -54,14 +56,98 @@ export const COMMAND_MAPPING = {
 export class WaterHeater {
     mqtt;
     pendingCommands;
+    sensors = {};
 
-    constructor (mqtt, queryParams) {
+
+    moduleAPI;
+    moduleFirmwareVersion; 
+    masterFirmwareVersion; 
+    masterModelId;
+    displayFirmwareVersion;
+    wifiFirmwareVersion;
+    updateRate;
+    mode;
+    setPoint;
+    units;
+    leakDetected;
+    maxSetPoint;
+    grid;
+    airFilterStatus;
+    condensePumpFail;
+    availableModes;
+    heating;
+    hotWaterVolume;
+    leak;
+    dryFire;
+    elementFail;
+    tankSensorFail;
+    ecoError;
+    masterDisplayFail;
+    systemSensorFail;
+    systemSensorFail;
+    systemFail;
+    upperTemperature;
+    lowerTemperature;
+    faultCodes;
+    unConnectNumber;
+    addressData;
+    signalStrength;
+
+    constructor (mqtt) {
         this.mqtt = mqtt;
-        this.convertQueryParams(queryParams);
-
-        this.createHomeAssistantConfig();
-        this.listenForCommands();
     }
+
+    async bootstrap (queryParams) {
+        await this.convertQueryParams(queryParams);
+        await this.createHomeAssistantConfig();
+        await this.listenForCommands();
+    }
+
+    async convertQueryParams (queryParams) {
+        const keys = Object.keys(queryParams);
+        for (const key of keys) {
+            if (key in MAPPING) {
+                switch (key) {
+                    case 'AvailableModes':
+                        this[MAPPING[key]] = queryParams[key].split(',');
+                        break;
+                    case 'LowerTemp':
+                    case 'UpperTemp':
+                    case 'SetPoint':
+                        this[MAPPING[key]] = parseInt(queryParams[key]);
+                        break;
+                    case 'DeviceText':
+                        this[MAPPING[key]] = queryParams[key];
+                        break;
+                    case 'Grid':
+                        case 'SystemInHeating':
+                        case 'Leak':
+                        case 'DryFire':
+                        case 'ElementFail':
+                        case 'TankSensorFail':
+                        case 'EcoError':
+                        case 'MasterDispFail':
+                        case 'CompSensorFail':
+                        case 'SysSensorFail':
+                        case 'SystemFail':
+                        case 'CondensePumpFail':
+                        case 'AirFilterStatus':
+                            if (MAPPING[key] in this.sensors) {
+                                await this.sensors[MAPPING[key]].updateValue(queryParams[key]);
+                            } else {
+                                this.sensors[MAPPING[key]] = new BinarySensor(MAPPING[key], queryParams[key], this, this.mqtt);
+                                await this.sensors[MAPPING[key]].bootstrap();
+                            }
+                            
+                    default:
+                        //convertedParams[MAPPING[key]] = queryParams[key];
+                }
+            }
+        }
+
+        await this.updateMQTTData()
+    }
+
 
     updatePendingCommands (key, value) {
         if (key in COMMAND_MAPPING) {
@@ -82,31 +168,6 @@ export class WaterHeater {
         delete this.pendingCommands;
 
         return response;
-    }
-
-    convertQueryParams (queryParams) {
-        const keys = Object.keys(queryParams);
-        for (const key of keys) {
-            if (key in MAPPING) {
-                switch (key) {
-                    case 'AvailableModes':
-                        this[MAPPING[key]] = queryParams[key].split(',');
-                        break;
-                    case 'LowerTemp':
-                    case 'UpperTemp':
-                        this[MAPPING[key]] = parseInt(queryParams[key]);
-                        break;
-                    default:
-                        this[MAPPING[key]] = queryParams[key];
-                }
-            }
-        }
-    }
-
-    async updateData(queryParams) {
-        this.convertQueryParams(queryParams);
-
-        await this.updateMQTTData();
     }
 
     generateDeviceConfig () {

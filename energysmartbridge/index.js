@@ -20,11 +20,11 @@ const getCreateWaterHeater = async (queryParams) => {
     const deviceId = queryParams.DeviceText;
 
     if (deviceId in WATER_HEATERS) {
-        await WATER_HEATERS[deviceId].updateData(queryParams);
+        await WATER_HEATERS[deviceId].convertQueryParams(queryParams);
         return WATER_HEATERS[deviceId]
     } else {
-        const waterHeater = new WaterHeater(MQTT_BROKER, queryParams);
-        await waterHeater.updateMQTTData();
+        const waterHeater = new WaterHeater(MQTT_BROKER);
+        await waterHeater.bootstrap(queryParams);
         WATER_HEATERS[deviceId] = waterHeater;
 
        return waterHeater;
@@ -32,7 +32,7 @@ const getCreateWaterHeater = async (queryParams) => {
 }
 
 app.use(async (req, res) => {
-    LOGGER.debug({message: "Got Request", req, body: req.body, path: req.path});
+    LOGGER.debug({message: "Got Request", body: req.body, path: req.path});
     const waterHeater = await getCreateWaterHeater(req.body);
     res.status(200).end(JSON.stringify(waterHeater.toResponse()));
 })
