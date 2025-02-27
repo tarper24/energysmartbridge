@@ -117,6 +117,7 @@ export class WaterHeater {
                         this[MAPPING[key]] = parseInt(queryParams[key]);
                         break;
                     case 'DeviceText':
+                    case 'Mode':
                         this[MAPPING[key]] = queryParams[key];
                         break;
                     case 'Grid':
