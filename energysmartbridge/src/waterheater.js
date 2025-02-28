@@ -171,8 +171,8 @@ export class WaterHeater {
 
     toResponse () {
         const response = {
-            ...this.pendingCommands,
             Success: "0",
+            ...this.pendingCommands,
         }
 
         delete this.pendingCommands;
