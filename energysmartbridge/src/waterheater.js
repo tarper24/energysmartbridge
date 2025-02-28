@@ -1,4 +1,5 @@
 import { BinarySensor } from "./binarySensor.js";
+import { LOGGER } from "./logger.js";
 
 const MODE_MAPPING = {
     'Electric': 'electric',
@@ -156,8 +157,16 @@ export class WaterHeater {
                 this.pendingCommands = {};
             }
 
-            this.pendingCommands[COMMAND_MAPPING[key]] = value;
+            switch (key) {
+                case 'temperature':
+                    this.pendingCommands[COMMAND_MAPPING[key]] = parseInt(value).toFixed(0);
+                    break;
+                default:
+                    this.pendingCommands[COMMAND_MAPPING[key]] = value;
+            }
         }
+
+        LOGGER.trace({message: "Updated Pending Commands", pendingCommands: this.pendingCommands});
     }
 
     toResponse () {

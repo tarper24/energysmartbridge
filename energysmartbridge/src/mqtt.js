@@ -13,6 +13,8 @@ export class MQTT {
     }
 
     onMessage (WATER_HEATERS, topic, message) {
+        LOGGER.trace({message: "Got MQTT Message", topic, message});
+
         const [prefix, deviceId, commands, commandType] = topic.split('/');
     
         // Make sure we are on the commands topic
