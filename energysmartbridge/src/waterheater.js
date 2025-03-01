@@ -107,6 +107,8 @@ export class WaterHeater {
     async convertQueryParams (queryParams) {
         const keys = Object.keys(queryParams);
         for (const key of keys) {
+            LOGGER.trace({message: "Converting key", key});
+
             if (key in MAPPING) {
                 switch (key) {
                     case 'AvailableModes':
@@ -124,6 +126,7 @@ export class WaterHeater {
                     case 'Grid':
                     case 'SystemInHeating':
                     case 'Leak':
+                    case 'LeakDetect':
                     case 'DryFire':
                     case 'ElementFail':
                     case 'TankSensorFail':
@@ -134,6 +137,8 @@ export class WaterHeater {
                     case 'SystemFail':
                     case 'CondensePumpFail':
                     case 'AirFilterStatus':
+                        LOGGER.trace({message: "Converting key to binary sensor", key});
+
                         if (MAPPING[key] in this.sensors) {
                             await this.sensors[MAPPING[key]].updateValue(queryParams[key]);
                         } else {

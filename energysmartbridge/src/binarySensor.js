@@ -22,6 +22,7 @@ export class BinarySensor {
             case 'DISABLED':
             case 'FALSE':
             case 'NONE':
+            case 'NOTDETECTED':
                 return 'OFF';
                 break;
             case 'ENABLED':
