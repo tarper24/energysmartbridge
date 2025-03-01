@@ -122,24 +122,25 @@ export class WaterHeater {
                         this[MAPPING[key]] = queryParams[key];
                         break;
                     case 'Grid':
-                        case 'SystemInHeating':
-                        case 'Leak':
-                        case 'DryFire':
-                        case 'ElementFail':
-                        case 'TankSensorFail':
-                        case 'EcoError':
-                        case 'MasterDispFail':
-                        case 'CompSensorFail':
-                        case 'SysSensorFail':
-                        case 'SystemFail':
-                        case 'CondensePumpFail':
-                        case 'AirFilterStatus':
-                            if (MAPPING[key] in this.sensors) {
-                                await this.sensors[MAPPING[key]].updateValue(queryParams[key]);
-                            } else {
-                                this.sensors[MAPPING[key]] = new BinarySensor(MAPPING[key], queryParams[key], this, this.mqtt);
-                                await this.sensors[MAPPING[key]].bootstrap();
-                            }
+                    case 'SystemInHeating':
+                    case 'Leak':
+                    case 'DryFire':
+                    case 'ElementFail':
+                    case 'TankSensorFail':
+                    case 'EcoError':
+                    case 'MasterDispFail':
+                    case 'CompSensorFail':
+                    case 'SysSensorFail':
+                    case 'SystemFail':
+                    case 'CondensePumpFail':
+                    case 'AirFilterStatus':
+                        if (MAPPING[key] in this.sensors) {
+                            await this.sensors[MAPPING[key]].updateValue(queryParams[key]);
+                        } else {
+                            this.sensors[MAPPING[key]] = new BinarySensor(MAPPING[key], queryParams[key], this, this.mqtt);
+                            await this.sensors[MAPPING[key]].bootstrap();
+                        }
+                        break;
                             
                     default:
                         //convertedParams[MAPPING[key]] = queryParams[key];
