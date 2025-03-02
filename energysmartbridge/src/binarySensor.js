@@ -1,14 +1,10 @@
-import { CONFIG } from './config.js';
+import { BaseSensor } from './baseSensor.js';
 
-export class BinarySensor {
-    name;
-    value;
-    waterHeater;
+export class BinarySensor extends BaseSensor {
+    sensorType = "binary_sensor";
 
-    constructor (name, value, waterHeater, mqtt) {
-        this.name = name;
-        this.waterHeater = waterHeater;
-        this.mqtt = mqtt;
+    constructor (name, value, waterHeater, mqtt, isDiagnostic = false) {
+        super(name, waterHeater, mqtt, isDiagnostic);
         this.value = this.convertValue(value);
     }
 
@@ -39,32 +35,5 @@ export class BinarySensor {
     async updateValue (value) {
         this.value = this.convertValue(value);
         await this.publishState();
-    }
-
-  //"HotWaterVol":"High",
-  //"FaultCodes":"0",
-
-    createConfigTopic () {
-        const { mqtt_homeassistant_prefix } = CONFIG();
-        return `${mqtt_homeassistant_prefix}/binary_sensor/${this.waterHeater.deviceId}/${this.name}/config`
-    }
-
-    createStateTopic () {
-        const { mqtt_prefix } = CONFIG();
-        return `${mqtt_prefix}/${this.waterHeater.deviceId}/${this.name}`
-    }
-
-    async publishConfig () {
-        const payload = {
-            state_topic: this.createStateTopic(),
-            unique_id: `${this.waterHeater.deviceId}-${this.name}`,
-            name: this.name,
-            ...this.waterHeater.generateDeviceConfig(),
-        };
-        await this.mqtt.publish(this.createConfigTopic(), JSON.stringify(payload));
-    }
-
-    async publishState () {
-        await this.mqtt.publish(this.createStateTopic(), this.value);
     }
 }

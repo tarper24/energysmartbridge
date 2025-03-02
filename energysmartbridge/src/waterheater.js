@@ -105,8 +105,26 @@ export class WaterHeater {
         await this.listenForCommands();
     }
 
+    async createUpdateSensor (queryParams, key, type, isDiagnostic) {
+        LOGGER.trace({message: "Converting key to sensor", key});
+
+        if (MAPPING[key] in this.sensors) {
+            await this.sensors[MAPPING[key]].updateValue(queryParams[key]);
+        } else {
+            this.sensors[MAPPING[key]] = new type(MAPPING[key], queryParams[key], this, this.mqtt, isDiagnostic);
+            await this.sensors[MAPPING[key]].bootstrap();
+        }
+    }
+
     async convertQueryParams (queryParams) {
         const keys = Object.keys(queryParams);
+
+        // Do device id first since we need it to create all the other sensors
+        if (keys.includes('DeviceText')) {
+            LOGGER.trace({message: 'Setting device id', deviceId: queryParams['DeviceText']});
+            this[MAPPING['DeviceText']] = queryParams['DeviceText'];
+        }
+
         for (const key of keys) {
             LOGGER.trace({message: "Converting key", key});
 
@@ -121,7 +139,6 @@ export class WaterHeater {
                     case 'MaxSetPoint':
                         this[MAPPING[key]] = parseInt(queryParams[key]);
                         break;
-                    case 'DeviceText':
                     case 'Mode':
                         this[MAPPING[key]] = queryParams[key];
                         break;
@@ -139,14 +156,12 @@ export class WaterHeater {
                     case 'SystemFail':
                     case 'CondensePumpFail':
                     case 'AirFilterStatus':
-                        LOGGER.trace({message: "Converting key to binary sensor", key});
-
-                        if (MAPPING[key] in this.sensors) {
-                            await this.sensors[MAPPING[key]].updateValue(queryParams[key]);
-                        } else {
-                            this.sensors[MAPPING[key]] = new BinarySensor(MAPPING[key], queryParams[key], this, this.mqtt);
-                            await this.sensors[MAPPING[key]].bootstrap();
-                        }
+                        await this.createUpdateSensor(queryParams, key, BinarySensor, false);
+                        break;
+                    case 'FaultCodes':
+                    case 'HotWaterVol':
+                    case 'UpdateRate':
+                        await this.createUpdateSensor(queryParams, key, Sensor, false);
                         break;
                     case 'ModuleApi':
                     case 'ModFwVer':
@@ -154,21 +169,10 @@ export class WaterHeater {
                     case 'MasterModelId':
                     case 'DisplayFwVer':
                     case 'WifiFwVer':
-                    case 'HotWaterVol':
-                    case 'FaultCodes':
                     case 'UnConnectNumber':
                     case 'AddrData':
                     case 'SignalStrength':
-                    case 'UpdateRate':
-                        LOGGER.trace({message: "Converting key to sensor", key});
-
-                        if (MAPPING[key] in this.sensors) {
-                            await this.sensors[MAPPING[key]].updateValue(queryParams[key]);
-                        } else {
-                            this.sensors[MAPPING[key]] = new Sensor(MAPPING[key], queryParams[key], this, this.mqtt);
-                            await this.sensors[MAPPING[key]].bootstrap();
-                        }
-
+                        await this.createUpdateSensor(queryParams, key, Sensor, true);
                         break;
                     default:
                         //convertedParams[MAPPING[key]] = queryParams[key];
