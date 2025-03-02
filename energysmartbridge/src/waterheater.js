@@ -1,5 +1,6 @@
 import { BinarySensor } from "./binarySensor.js";
 import { LOGGER } from "./logger.js";
+import { Sensor } from "./sensor.js";
 
 const MODE_MAPPING = {
     'Electric': 'electric',
@@ -117,6 +118,7 @@ export class WaterHeater {
                     case 'LowerTemp':
                     case 'UpperTemp':
                     case 'SetPoint':
+                    case 'MaxSetPoint':
                         this[MAPPING[key]] = parseInt(queryParams[key]);
                         break;
                     case 'DeviceText':
@@ -146,7 +148,28 @@ export class WaterHeater {
                             await this.sensors[MAPPING[key]].bootstrap();
                         }
                         break;
-                            
+                    case 'ModuleApi':
+                    case 'ModFwVer':
+                    case 'MasterFwVer':
+                    case 'MasterModelId':
+                    case 'DisplayFwVer':
+                    case 'WifiFwVer':
+                    case 'HotWaterVol':
+                    case 'FaultCodes':
+                    case 'UnConnectNumber':
+                    case 'AddrData':
+                    case 'SignalStrength':
+                    case 'UpdateRate':
+                        LOGGER.trace({message: "Converting key to sensor", key});
+
+                        if (MAPPING[key] in this.sensors) {
+                            await this.sensors[MAPPING[key]].updateValue(queryParams[key]);
+                        } else {
+                            this.sensors[MAPPING[key]] = new Sensor(MAPPING[key], queryParams[key], this, this.mqtt);
+                            await this.sensors[MAPPING[key]].bootstrap();
+                        }
+
+                        break;
                     default:
                         //convertedParams[MAPPING[key]] = queryParams[key];
                 }
