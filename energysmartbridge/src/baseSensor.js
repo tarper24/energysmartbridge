@@ -9,7 +9,6 @@ export class BaseSensor {
     sensorType;
 
     constructor (name, waterHeater, mqtt, isDiagnostic = false) {
-        console.log('constructor waterhere base', waterHeater);
         this.name = name;
         this.waterHeater = waterHeater;
         this.mqtt = mqtt;
@@ -48,10 +47,16 @@ export class BaseSensor {
             payload.entity_category = 'diagnostic'
         }
 
-        await this.mqtt.publish(this.createConfigTopic(), JSON.stringify(payload));
+        const topic = this.createConfigTopic();
+        
+        LOGGER.trace({message: "Publishing config", topic, name: this.name});
+
+        await this.mqtt.publish(topic, JSON.stringify(payload));
     }
 
     async publishState () {
-        await this.mqtt.publish(this.createStateTopic(), this.value);
+        const topic = this.createStateTopic();
+        LOGGER.trace({message: "Publishing state", topic, name: this.name, value: this.value});
+        await this.mqtt.publish(topic, this.value);
     }
 }
