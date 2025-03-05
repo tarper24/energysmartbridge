@@ -59,4 +59,7 @@ export const READABLE_MAPPING = {
     masterDisplayFail: 'Master Display Failed',
     TankSensorFail: 'Tank Sensor Failed',
     updateRate: 'Update Rate',
+    upperTemperature: 'Upper Temperature',
+    lowerTemperature: 'Lower Temperature',
+    maxSetPoint: 'Max Set Point',
 };
