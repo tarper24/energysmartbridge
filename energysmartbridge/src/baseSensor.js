@@ -1,4 +1,5 @@
 import { CONFIG } from './config.js';
+import { LOGGER } from "./logger.js";
 
 export class BaseSensor {
     name;
