@@ -1,21 +1,17 @@
-import { CONFIG } from './config.js';
-import { LOGGER } from "./logger.js";
+import { BaseSensor } from './baseSensor.js';
+import { LOGGER } from './logger.js';
 import { READABLE_MAPPING } from './mappings.js';
 
-export class BaseSensor {
-    name;
-    value;
-    waterHeater;
-    diagnostic;
+export class NumberSensor extends BaseSensor {
+    sensorType = "number";
+    minimum;
+    maximum;
+    measurementUnit;
 
-    sensorType;
-
-    constructor (name, waterHeater, value, mqtt, isDiagnostic = false) {
-        this.name = name;
-        this.waterHeater = waterHeater;
-        this.value = value;
-        this.mqtt = mqtt;
-        this.diagnostic = isDiagnostic;
+    constructor (name, waterHeater, value, mqtt, measurementUnit, isDiagnostic = false,  minimum = 1, maximum = 200) {
+        super(name, waterHeater, value, mqtt, isDiagnostic);
+        this.maximum = maximum;
+        this.minimum = minimum;
     }
 
     async bootstrap () {
@@ -23,26 +19,14 @@ export class BaseSensor {
         await this.publishState();
     }
 
-    async updateValue (value) {
-        this.value = value;
-        await this.publishState();
-    }
-
-    createConfigTopic () {
-        const { mqtt_homeassistant_prefix } = CONFIG();
-        return `${mqtt_homeassistant_prefix}/${this.sensorType}/${this.waterHeater.deviceId}/${this.name}/config`
-    }
-
-    createStateTopic () {
-        const { mqtt_prefix } = CONFIG();
-        return `${mqtt_prefix}/${this.waterHeater.deviceId}/${this.name}`
-    }
-
     async publishConfig () {
         const payload = {
             state_topic: this.createStateTopic(),
             unique_id: `${this.waterHeater.deviceId}-${this.name}`,
             name: READABLE_MAPPING[this.name],
+            min: this.minimum,
+            max: this.maximum,
+            unit_of_measurement: "°F",
             ...this.waterHeater.generateDeviceConfig(),
         };
 
@@ -60,6 +44,6 @@ export class BaseSensor {
     async publishState () {
         const topic = this.createStateTopic();
         LOGGER.trace({message: "Publishing state", topic, name: this.name, value: this.value});
-        await this.mqtt.publish(topic, this.value);
+        await this.mqtt.publish(topic, this.value.toFixed(0));
     }
 }

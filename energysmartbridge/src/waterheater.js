@@ -1,53 +1,8 @@
 import { BinarySensor } from "./binarySensor.js";
 import { LOGGER } from "./logger.js";
 import { Sensor } from "./sensor.js";
-
-const MODE_MAPPING = {
-    'Electric': 'electric',
-    'Standard': "electric",
-    'Efficiency': "heat_pump",
-    'EnergySmart': "eco",
-    'Hybrid': "eco",
-    'Vacation': "off",
-};
-
-const MAPPING = {
-    DeviceText: 'deviceId',
-    Password: 'password',
-    ModuleApi: 'moduleAPI',
-    ModFwVer: 'moduleFirmwareVersion',
-    MasterFwVer: 'masterFirmwareVersion',
-    MasterModelId: 'masterModelId',
-    DisplayFwVer: 'displayFirmwareVersion',
-    WifiFwVer: 'wifiFirmwareVersion',
-    UpdateRate: 'updateRate',
-    Mode: 'mode',
-    SetPoint: 'setPoint',
-    Units: 'units',
-    LeakDetect: 'leakDetected',
-    MaxSetPoint: 'maxSetPoint',
-    Grid: 'grid',
-    AirFilterStatus: 'airFilterStatus',
-    CondensePumpFail: 'condensePumpFail',
-    AvailableModes: 'availableModes',
-    SystemInHeating: 'heating',
-    HotWaterVol: 'hotWaterVolume',
-    Leak: 'leak',
-    DryFire: 'dryFire',
-    ElementFail: 'elementFail',
-    TankSensorFail: 'tankSensorFail',
-    EcoError: 'ecoError',
-    MasterDispFail: 'masterDisplayFail',
-    CompSensorFail: 'systemSensorFail',
-    SysSensorFail: 'systemSensorFail',
-    SystemFail: 'systemFail',
-    UpperTemp: 'upperTemperature',
-    LowerTemp: 'lowerTemperature',
-    FaultCodes: 'faultCodes',
-    UnConnectNumber: 'unConnectNumber',
-    AddrData: 'addressData',
-    SignalStrength: 'signalStrength',
-};
+import { MAPPING, MODE_MAPPING } from './mappings.js';
+import { NumberSensor } from "./numberSensor.js";
 
 export const COMMAND_MAPPING = {
     mode: 'Mode',
@@ -111,7 +66,7 @@ export class WaterHeater {
         if (MAPPING[key] in this.sensors) {
             await this.sensors[MAPPING[key]].updateValue(queryParams[key]);
         } else {
-            this.sensors[MAPPING[key]] = new type(MAPPING[key], queryParams[key], this, this.mqtt, isDiagnostic);
+            this.sensors[MAPPING[key]] = new type(MAPPING[key], this, queryParams[key], this.mqtt, isDiagnostic);
             await this.sensors[MAPPING[key]].bootstrap();
         }
     }
@@ -125,6 +80,11 @@ export class WaterHeater {
             this[MAPPING['DeviceText']] = queryParams['DeviceText'];
         }
 
+        // Get unit & max set points for temps
+        const unit = `°${queryParams['Unit'] || 'F'}`;
+        this.maxSetPoint = parseInt(queryParams['MaxSetPoint']);
+
+
         for (const key of keys) {
             LOGGER.trace({message: "Converting key", key});
 
@@ -135,8 +95,16 @@ export class WaterHeater {
                         break;
                     case 'LowerTemp':
                     case 'UpperTemp':
+                    case 'UpdateRate':
+                        if (MAPPING[key] in this.sensors) {
+                            await this.sensors[MAPPING[key]].updateValue(parseInt(queryParams[key]));
+                        } else {
+                            const max = (key == 'UpdateRate' ? 6000 : this.maxSetPoint);
+                            this.sensors[MAPPING[key]] = new NumberSensor(MAPPING[key], this, parseInt(queryParams[key]), this.mqtt, unit, key === 'UpdateRate', 1, max);
+                            await this.sensors[MAPPING[key]].bootstrap();
+                        }
+                        break;
                     case 'SetPoint':
-                    case 'MaxSetPoint':
                         this[MAPPING[key]] = parseInt(queryParams[key]);
                         break;
                     case 'Mode':
@@ -160,7 +128,6 @@ export class WaterHeater {
                         break;
                     case 'FaultCodes':
                     case 'HotWaterVol':
-                    case 'UpdateRate':
                         await this.createUpdateSensor(queryParams, key, Sensor, false);
                         break;
                     case 'ModuleApi':
@@ -268,9 +235,9 @@ export class WaterHeater {
     }
 
     async updateMQTTData () {
-        await this.mqtt.publish(`energysmartbridge/${this.deviceId}/upper_temperature`, this.upperTemperature.toString());
-        await this.mqtt.publish(`energysmartbridge/${this.deviceId}/lower_temperature`, this.lowerTemperature.toString());
-        await this.mqtt.publish(`energysmartbridge/${this.deviceId}/current_temperature`, ((this.lowerTemperature + this.upperTemperature) / 2).toFixed(0));
+        //await this.mqtt.publish(`energysmartbridge/${this.deviceId}/upper_temperature`, this.upperTemperature.value);
+        //await this.mqtt.publish(`energysmartbridge/${this.deviceId}/lower_temperature`, this.lowerTemperature.value);
+        await this.mqtt.publish(`energysmartbridge/${this.deviceId}/current_temperature`, ((this.sensors.lowerTemperature.value + this.sensors.upperTemperature.value) / 2).toFixed(0));
 
         await this.mqtt.publish(`energysmartbridge/${this.deviceId}/mode`, this.mode);
         await this.mqtt.publish(`energysmartbridge/${this.deviceId}/set_point`, this.setPoint.toString());

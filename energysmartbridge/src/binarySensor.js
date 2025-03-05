@@ -3,9 +3,9 @@ import { BaseSensor } from './baseSensor.js';
 export class BinarySensor extends BaseSensor {
     sensorType = "binary_sensor";
 
-    constructor (name, value, waterHeater, mqtt, isDiagnostic = false) {
-        super(name, waterHeater, mqtt, isDiagnostic);
-        this.value = this.convertValue(value);
+    constructor (name, waterHeater, value, mqtt, isDiagnostic = false) {
+        super(name, waterHeater, value, mqtt, isDiagnostic);
+        this.value = this.convertValue(this.value);
     }
 
     async bootstrap () {
