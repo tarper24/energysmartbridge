@@ -1,6 +1,6 @@
 import { CONFIG } from './config.js';
 import { LOGGER } from "./logger.js";
-import { READABLE_MAPPING } from './mappings.js';
+import { DEVICE_CLASS_MAPPING, READABLE_MAPPING } from './mappings.js';
 
 export class BaseSensor {
     name;
@@ -49,6 +49,10 @@ export class BaseSensor {
 
         if (this.diagnostic) {
             payload.entity_category = 'diagnostic'
+        }
+
+        if (this.name in DEVICE_CLASS_MAPPING) {
+            payload.device_class = DEVICE_CLASS_MAPPING[this.name];
         }
 
         const topic = this.createConfigTopic();

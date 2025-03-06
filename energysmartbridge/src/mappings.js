@@ -58,7 +58,6 @@ export const READABLE_MAPPING = {
     leakDetected: 'Leak Detection Enabled',
     masterDisplayFail: 'Master Display Failed',
     tankSensorFail: 'Tank Sensor Failed',
-    updateRate: 'Update Rate',
     upperTemperature: 'Upper Temperature',
     lowerTemperature: 'Lower Temperature',
     maxSetPoint: 'Max Set Point',
@@ -72,4 +71,23 @@ export const READABLE_MAPPING = {
     addressData: 'Address Data',
     signalStrength: 'Signal Strength',
     unConnectNumber: 'UnConnect Number',
+};
+
+export const DEVICE_CLASS_MAPPING = {
+    heating: 'heat',
+    elementFail: 'problem',
+    grid: 'connectivity',
+    dryFire: 'problem',
+    ecoError: 'problem',
+    leak: 'problem',
+    masterDisplayFail: 'problem',
+    tankSensorFail: 'problem',
+    upperTemperature: 'temperature',
+    lowerTemperature: 'temperature',
+    maxSetPoint: 'temperature',
+
+    hotWaterVolume: 'enum',
+
+    updateRate: 'duration',
+    signalStrength: 'signal_strength',
 };
