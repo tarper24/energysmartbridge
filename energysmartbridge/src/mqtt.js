@@ -27,18 +27,8 @@ export class MQTT {
         }
     }
 
-    async publishBinarySensor (deviceConfig) {
-        const payload = {
-            device: deviceConfig,
-            state_topic: '',
-            unique_id: '',
-            entity_category: '',
-            name: ''
-        }
-    }
-
     async publish (topic, payload) {
-        return await this.connection.publishAsync(topic, payload);
+        return await this.connection.publishAsync(topic, payload, {retain: true});
     }
 
     async subscribe (topic) {
