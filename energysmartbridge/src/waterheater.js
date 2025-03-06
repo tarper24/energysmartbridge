@@ -79,6 +79,8 @@ export class WaterHeater {
             this[MAPPING['DeviceText']] = queryParams['DeviceText'];
         }
 
+        const unit = ('Units' in queryParams ? `°${queryParams['Units']}` : '°F')
+
         for (const key of keys) {
             LOGGER.trace({message: "Converting key", key});
 
@@ -111,10 +113,12 @@ export class WaterHeater {
                         break;
                     case 'FaultCodes':
                     case 'HotWaterVol':
+                        await this.createUpdateSensor(queryParams, key, Sensor, false);
+                        break;
                     case 'LowerTemp':
                     case 'UpperTemp':
                     case 'MaxSetPoint':
-                        await this.createUpdateSensor(queryParams, key, Sensor, false);
+                        await this.createUpdateSensor(queryParams, key, Sensor, false, unit);
                         break;
                     case 'ModuleApi':
                     case 'ModFwVer':
