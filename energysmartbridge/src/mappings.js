@@ -57,7 +57,7 @@ export const READABLE_MAPPING = {
     leak: 'Leak Detected',
     leakDetected: 'Leak Detection Enabled',
     masterDisplayFail: 'Master Display Failed',
-    TankSensorFail: 'Tank Sensor Failed',
+    tankSensorFail: 'Tank Sensor Failed',
     updateRate: 'Update Rate',
     upperTemperature: 'Upper Temperature',
     lowerTemperature: 'Lower Temperature',
