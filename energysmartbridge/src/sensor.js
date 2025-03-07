@@ -30,6 +30,8 @@ export class Sensor extends BaseSensor {
             payload.device_class = DEVICE_CLASS_MAPPING[this.name];
         }
 
+        LOGGER.trace({message: 'Checking if unit is set', unit: this.unit});
+
         if (this.unit) {
             payload.unit_of_measurement = this.unit;
             payload.state_class = 'measurement';

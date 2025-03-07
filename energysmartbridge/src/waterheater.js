@@ -79,7 +79,8 @@ export class WaterHeater {
             this[MAPPING['DeviceText']] = queryParams['DeviceText'];
         }
 
-        const unit = ('Units' in queryParams ? `°${queryParams['Units']}` : '°F')
+        const unit = ('Units' in queryParams ? `°${queryParams['Units']}` : '°F');
+        LOGGER.trace({message: 'Got Unit', unit});
 
         for (const key of keys) {
             LOGGER.trace({message: "Converting key", key});
