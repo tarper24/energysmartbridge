@@ -31,7 +31,7 @@ export class Sensor extends BaseSensor {
         }
 
         if (this.unit) {
-            payload.unit_of_measurement = unit;
+            payload.unit_of_measurement = this.unit;
             payload.state_class = 'measurement';
         }
 
