@@ -1,4 +1,5 @@
 import { BaseSensor } from './baseSensor.js';
+import { DEVICE_CLASS_MAPPING, READABLE_MAPPING } from './mappings.js';
 
 export class Sensor extends BaseSensor {
     sensorType = "sensor";

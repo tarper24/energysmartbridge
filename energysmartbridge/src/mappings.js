@@ -79,7 +79,8 @@ export const DEVICE_CLASS_MAPPING = {
     grid: 'connectivity',
     dryFire: 'problem',
     ecoError: 'problem',
-    leak: 'problem',
+    leak: 'moisture',
+
     masterDisplayFail: 'problem',
     tankSensorFail: 'problem',
     upperTemperature: 'temperature',
