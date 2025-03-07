@@ -32,6 +32,7 @@ export class Sensor extends BaseSensor {
 
         if (this.unit) {
             payload.unit_of_measurement = unit;
+            payload.state_class = 'measurement';
         }
 
         const topic = this.createConfigTopic();
