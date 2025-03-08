@@ -59,13 +59,13 @@ export class WaterHeater {
         await this.listenForCommands();
     }
 
-    async createUpdateSensor (queryParams, key, type, isDiagnostic) {
+    async createUpdateSensor (queryParams, key, type, isDiagnostic, unit = undefined) {
         LOGGER.trace({message: "Converting key to sensor", key});
 
         if (MAPPING[key] in this.sensors) {
             await this.sensors[MAPPING[key]].updateValue(queryParams[key]);
         } else {
-            this.sensors[MAPPING[key]] = new type(MAPPING[key], this, queryParams[key], this.mqtt, isDiagnostic);
+            this.sensors[MAPPING[key]] = new type(MAPPING[key], this, queryParams[key], this.mqtt, isDiagnostic, unit);
             await this.sensors[MAPPING[key]].bootstrap();
         }
     }
