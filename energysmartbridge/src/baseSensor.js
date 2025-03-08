@@ -10,12 +10,12 @@ export class BaseSensor {
 
     sensorType;
 
-    constructor (name, waterHeater, value, mqtt, isDiagnostic = false) {
+    constructor (name, waterHeater, value, mqtt, options = {}) {
         this.name = name;
         this.waterHeater = waterHeater;
         this.value = value;
         this.mqtt = mqtt;
-        this.diagnostic = isDiagnostic;
+        this.diagnostic = options.isDiagnostic || false;
     }
 
     async bootstrap () {

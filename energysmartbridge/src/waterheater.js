@@ -2,6 +2,7 @@ import { BinarySensor } from "./binarySensor.js";
 import { LOGGER } from "./logger.js";
 import { Sensor } from "./sensor.js";
 import { MAPPING, MODE_MAPPING } from './mappings.js';
+import { NumberSensor } from "./numberSensor.js";
 
 export const COMMAND_MAPPING = {
     mode: 'Mode',
@@ -59,13 +60,13 @@ export class WaterHeater {
         await this.listenForCommands();
     }
 
-    async createUpdateSensor (queryParams, key, type, isDiagnostic, unit = undefined) {
+    async createUpdateSensor (queryParams, key, type, options = {}) {
         LOGGER.trace({message: "Converting key to sensor", key});
 
         if (MAPPING[key] in this.sensors) {
             await this.sensors[MAPPING[key]].updateValue(queryParams[key]);
         } else {
-            this.sensors[MAPPING[key]] = new type(MAPPING[key], this, queryParams[key], this.mqtt, isDiagnostic, unit);
+            this.sensors[MAPPING[key]] = new type(MAPPING[key], this, queryParams[key], this.mqtt, options);
             await this.sensors[MAPPING[key]].bootstrap();
         }
     }
@@ -110,16 +111,16 @@ export class WaterHeater {
                     case 'SystemFail':
                     case 'CondensePumpFail':
                     case 'AirFilterStatus':
-                        await this.createUpdateSensor(queryParams, key, BinarySensor, false);
+                        await this.createUpdateSensor(queryParams, key, BinarySensor, {isDiagnostic: false});
                         break;
                     case 'FaultCodes':
                     case 'HotWaterVol':
-                        await this.createUpdateSensor(queryParams, key, Sensor, false);
+                        await this.createUpdateSensor(queryParams, key, Sensor, {isDiagnostic: false});
                         break;
                     case 'LowerTemp':
                     case 'UpperTemp':
                     case 'MaxSetPoint':
-                        await this.createUpdateSensor(queryParams, key, Sensor, false, unit);
+                        await this.createUpdateSensor(queryParams, key, Sensor, {isDiagnostic: false, unit});
                         break;
                     case 'ModuleApi':
                     case 'ModFwVer':
@@ -130,8 +131,10 @@ export class WaterHeater {
                     case 'UnConnectNumber':
                     case 'AddrData':
                     case 'SignalStrength':
+                        await this.createUpdateSensor(queryParams, key, Sensor, {isDiagnostic: true});
+                        break;
                     case 'UpdateRate':
-                        await this.createUpdateSensor(queryParams, key, Sensor, true);
+                        await this.createUpdateSensor(queryParams, key, NumberSensor, {isDiagnostic: true, max: 600, min: 30});
                         break;
                     default:
                         //convertedParams[MAPPING[key]] = queryParams[key];

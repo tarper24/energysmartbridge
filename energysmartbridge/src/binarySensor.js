@@ -3,8 +3,8 @@ import { BaseSensor } from './baseSensor.js';
 export class BinarySensor extends BaseSensor {
     sensorType = "binary_sensor";
 
-    constructor (name, waterHeater, value, mqtt, isDiagnostic = false) {
-        super(name, waterHeater, value, mqtt, isDiagnostic);
+    constructor (name, waterHeater, value, mqtt, options = {}) {
+        super(name, waterHeater, value, mqtt, options);
         this.value = this.convertValue(this.value);
     }
 

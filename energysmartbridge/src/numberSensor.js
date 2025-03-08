@@ -2,15 +2,28 @@ import { BaseSensor } from './baseSensor.js';
 import { LOGGER } from './logger.js';
 import { DEVICE_CLASS_MAPPING, READABLE_MAPPING } from './mappings.js';
 
-export class Sensor extends BaseSensor {
-    sensorType = "sensor";
-
-    unit;
+export class NumberSensor extends BaseSensor {
+    sensorType = "number";
+    min;
+    max;
 
     constructor (name, waterHeater, value, mqtt, options = {}) {
         super(name, waterHeater, value, mqtt, options);
 
-        this.unit = options.unit || undefined;
+        this.max = options.max || 100;
+        this.min = options.min || 1;
+    }
+
+    commandTopic () {
+        return `energysmartbridge/${this.waterHeater.deviceId}/commands/${this.name}`;
+    }
+
+    async bootstrap () {
+        await this.publishConfig();
+
+        await this.mqtt.subscribe(this.commandTopic());
+
+        await this.publishState();
     }
 
     async publishConfig () {
@@ -19,6 +32,9 @@ export class Sensor extends BaseSensor {
             unique_id: `${this.waterHeater.deviceId}-${this.name}`,
             name: READABLE_MAPPING[this.name],
             object_id: `${this.waterHeater.deviceId}_${READABLE_MAPPING[this.name].replaceAll(" ", "_")}`,
+            command_topic: this.commandTopic(),
+            min: this.min,
+            max: this.max,
             ...this.waterHeater.generateDeviceConfig(),
         };
 
@@ -28,13 +44,6 @@ export class Sensor extends BaseSensor {
 
         if (this.name in DEVICE_CLASS_MAPPING) {
             payload.device_class = DEVICE_CLASS_MAPPING[this.name];
-        }
-
-        LOGGER.trace({message: 'Checking if unit is set', unit: this.unit});
-
-        if (this.unit) {
-            payload.unit_of_measurement = this.unit;
-            payload.state_class = 'measurement';
         }
 
         const topic = this.createConfigTopic();
