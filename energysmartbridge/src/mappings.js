@@ -34,7 +34,7 @@ export const MAPPING = {
     TankSensorFail: 'tankSensorFail',
     EcoError: 'ecoError',
     MasterDispFail: 'masterDisplayFail',
-    CompSensorFail: 'systemSensorFail',
+    CompSensorFail: 'compressorSensorFail',
     SysSensorFail: 'systemSensorFail',
     SystemFail: 'systemFail',
     UpperTemp: 'upperTemperature',
@@ -58,6 +58,8 @@ export const READABLE_MAPPING = {
     leakDetected: 'Leak Detection Enabled',
     masterDisplayFail: 'Master Display Failed',
     tankSensorFail: 'Tank Sensor Failed',
+    compressorSensorFail: 'Compressor Display Failed',
+    systemSensorFail: 'System Sensor Failed',
     upperTemperature: 'Upper Temperature',
     lowerTemperature: 'Lower Temperature',
     maxSetPoint: 'Max Set Point',
@@ -83,6 +85,9 @@ export const DEVICE_CLASS_MAPPING = {
 
     masterDisplayFail: 'problem',
     tankSensorFail: 'problem',
+    compressorSensorFail: 'problem',
+    systemSensorFail: 'problem',
+
     upperTemperature: 'temperature',
     lowerTemperature: 'temperature',
     maxSetPoint: 'temperature',
