@@ -32,6 +32,11 @@ const getCreateWaterHeater = async (queryParams) => {
 }
 
 app.use(async (req, res) => {
+    // ignore empty payloads
+    if (Object.keys(req.body || {}).length === 0) {
+        return;
+    }
+
     LOGGER.debug({message: "Got Request", body: req.body, path: req.path});
     const waterHeater = await getCreateWaterHeater(req.body);
     res.status(200).end(JSON.stringify(waterHeater.toResponse()));
@@ -39,4 +44,4 @@ app.use(async (req, res) => {
 
 app.listen(8001);
 
-LOGGER.info({message: "Server listening on 80"});
+LOGGER.info({message: "Server listening on 8001"});
