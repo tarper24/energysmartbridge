@@ -60,6 +60,7 @@ export const READABLE_MAPPING = {
     tankSensorFail: 'Tank Sensor Failed',
     compressorSensorFail: 'Compressor Display Failed',
     systemSensorFail: 'System Sensor Failed',
+    systemFail: 'System Failed',
     upperTemperature: 'Upper Temperature',
     lowerTemperature: 'Lower Temperature',
     maxSetPoint: 'Max Set Point',
@@ -87,6 +88,7 @@ export const DEVICE_CLASS_MAPPING = {
     tankSensorFail: 'problem',
     compressorSensorFail: 'problem',
     systemSensorFail: 'problem',
+    systemFail: 'problem',
 
     upperTemperature: 'temperature',
     lowerTemperature: 'temperature',
