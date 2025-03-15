@@ -74,6 +74,7 @@ export const READABLE_MAPPING = {
     addressData: 'Address Data',
     signalStrength: 'Signal Strength',
     unConnectNumber: 'UnConnect Number',
+    condensePumpFail: 'Condenser Pump Failed'
 };
 
 export const DEVICE_CLASS_MAPPING = {
@@ -89,6 +90,7 @@ export const DEVICE_CLASS_MAPPING = {
     compressorSensorFail: 'problem',
     systemSensorFail: 'problem',
     systemFail: 'problem',
+    condensePumpFail: 'problem',
 
     upperTemperature: 'temperature',
     lowerTemperature: 'temperature',
