@@ -74,15 +74,13 @@ export const READABLE_MAPPING = {
     addressData: 'Address Data',
     signalStrength: 'Signal Strength',
     unConnectNumber: 'UnConnect Number',
-    condensePumpFail: 'Condenser Pump Failed'
+    condensePumpFail: 'Condenser Pump Failed',
+    airFilterStatus: 'Air Filter Status',
 };
 
 export const DEVICE_CLASS_MAPPING = {
     heating: 'heat',
-    elementFail: 'problem',
     grid: 'connectivity',
-    dryFire: 'problem',
-    ecoError: 'problem',
     leak: 'moisture',
 
     masterDisplayFail: 'problem',
@@ -91,6 +89,10 @@ export const DEVICE_CLASS_MAPPING = {
     systemSensorFail: 'problem',
     systemFail: 'problem',
     condensePumpFail: 'problem',
+    airFilterStatus: 'problem',
+    dryFire: 'problem',
+    ecoError: 'problem',
+    elementFail: 'problem',
 
     upperTemperature: 'temperature',
     lowerTemperature: 'temperature',
