@@ -110,8 +110,10 @@ export class WaterHeater {
                     case 'SysSensorFail':
                     case 'SystemFail':
                     case 'CondensePumpFail':
-                    case 'AirFilterStatus':
                         await this.createUpdateSensor(queryParams, key, BinarySensor, {isDiagnostic: false});
+                        break;
+                    case 'AirFilterStatus':
+                        await this.createUpdateSensor(queryParams, key, BinarySensor, {isDiagnostic: false, inverse: true});
                         break;
                     case 'FaultCodes':
                     case 'HotWaterVol':

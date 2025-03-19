@@ -19,13 +19,11 @@ export class BinarySensor extends BaseSensor {
             case 'FALSE':
             case 'NONE':
             case 'NOTDETECTED':
-                return 'OFF';
-                break;
+                return (this.inverse ? 'ON' : 'OFF');
             case 'ENABLED':
             case 'TRUE':
             case 'OK':
-                return 'ON';
-                break;
+                return (this.inverse ? 'OFF' : 'ON');
             default:
                 // log unknown value
                 return value;

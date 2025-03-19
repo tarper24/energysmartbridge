@@ -7,6 +7,7 @@ export class BaseSensor {
     value;
     waterHeater;
     diagnostic;
+    inverse;
 
     sensorType;
 
@@ -16,6 +17,7 @@ export class BaseSensor {
         this.value = value;
         this.mqtt = mqtt;
         this.diagnostic = options.isDiagnostic || false;
+        this.inverse = options.inverse || false;
     }
 
     async bootstrap () {
