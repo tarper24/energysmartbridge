@@ -8,8 +8,17 @@ export class MQTT {
     constructor (WATER_HEATERS) {
         const { mqtt_host, mqtt_port, mqtt_username, mqtt_password } = CONFIG();
 
-        this.connection = mqtt.connect(`mqtt://${mqtt_host}:${mqtt_port}`, {username: mqtt_username, password: mqtt_password});
+        this.connection = mqtt.connect(`mqtt://${mqtt_host}:${mqtt_port}`, {
+            username: mqtt_username,
+            password: mqtt_password,
+            reconnectPeriod: 60000
+        });
         this.connection.on('message', (topic, message) => this.onMessage(WATER_HEATERS, topic, message));
+        this.connection.on('error', this.onError);
+    }
+
+    onError (error) {
+        LOGGER.error({message: "MQTT Error Occured", error});
     }
 
     onMessage (WATER_HEATERS, topic, message) {
