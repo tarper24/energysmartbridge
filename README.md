@@ -1,5 +1,8 @@
 # EnergySmart Bridge
-A Home Assistant add-on designed to repurpose the controllers for the now defunct [Lowe's EnergySmart Water Heater WiFi Controller](https://www.lowes.com/pd/EnergySmart-Electric-Plastic-Water-Heater-Controller/50292493) & possibly [Kenmore Smart Electric Water Heater Module](https://www.sears.com/kenmore-smart-water-heater-module/p-04258000000P). It should be capable of supporting AO Smith, Whirlpool, and Kenmore water heaters with the compatible port, but not all have been tested. Since these controllers were rendered worthless when the cloud service shut down. they should be fairly inexpensive to acquire.
+A Home Assistant add-on designed to repurpose the controllers for the now defunct [Lowe's EnergySmart Water Heater WiFi Controller](https://www.lowes.com/pd/EnergySmart-Electric-Plastic-Water-Heater-Controller/50292493). It should be capable of supporting AO Smith, Whirlpool, and Kenmore water heaters with the compatible port, but not all have been tested. Since these controllers were rendered worthless when the cloud service shut down. they should be fairly inexpensive to acquire.
+
+### Unsupported Devices
+- [Kenmore Smart Water Heater Module Monitor 42 5800](https://github.com/starsoccer/energysmartbridge/issues/11)
 
 ## How it Works
 The controller posts the status of the water heater every 5-6 minutes to https://energysmartwaterheater.com/. Any queued setting changes are returned in the json response. Since the cloud service is now offline, you must redirect the DNS to Home Assistant where this add-on will accept and control the communication. This traffic is on port 443 which is not in use by Home Assistant by default.
